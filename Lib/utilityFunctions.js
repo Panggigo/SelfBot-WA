@@ -1,4 +1,5 @@
 const fs = require("fs");
+const axios = require("axios");
 const sharp = require("sharp");
 const { TextReply } = require("./messageFunctions");
 const { downloadContentFromMessage } = require("@whiskeysockets/baileys");
@@ -221,5 +222,43 @@ exports.setBotName = async (client, jid, newBot) => {
     } catch (error) {
         console.error("❌ Error saat mengubah nama bot:", error);
         await client.sendMessage(jid, { text: "❌ Gagal mengubah nama bot." });
+    }
+};
+
+/**
+ * 🔄 Menerjemahkan teks dari sourceLang ke targetLang menggunakan API MyMemory
+ * @param {string} text - Teks yang akan diterjemahkan
+ * @param {string} targetLang - Kode bahasa tujuan (contoh: "id" untuk Indonesia)
+ * @param {string} sourceLang - Kode bahasa sumber (contoh: "en" untuk Inggris)
+ * @returns {string} Teks yang sudah diterjemahkan
+ */
+exports.translateText = async (text, targetLang, sourceLang) => {
+    try {
+        if (!text || !targetLang || !sourceLang) {
+            throw new Error("❌ Semua parameter (text, targetLang, sourceLang) harus diisi.");
+        }
+        let response = await axios.get("https://api.mymemory.translated.net/get", {
+            params: {
+                q: text,
+                langpair: `${sourceLang}|${targetLang}` // 🔹 Tentukan bahasa sumber & tujuan
+            }
+        });
+        if (response.data.responseStatus !== 200) {
+            throw new Error(`Terjemahan gagal. Status: ${response.data.responseStatus}`);
+        }
+        let matches = response.data.matches;
+        // 🔹 Cari terjemahan terbaik (cari yang memiliki match tertinggi dan masuk akal)
+        let bestMatch = matches
+            .filter(m => m.translation && m.match > 0.80) // Ambil hanya yang match > 80%
+            .sort((a, b) => b.match - a.match)[0]; // Ambil yang match tertinggi
+
+        let translatedText = bestMatch ? bestMatch.translation : response.data.responseData.translatedText;
+        if (!translatedText || translatedText.trim() === "") {
+            throw new Error("API tidak mengembalikan teks terjemahan.");
+        }
+        return translatedText;
+    } catch (error) {
+        console.error("❌ Error saat menerjemahkan:", error);
+        return "❌ Gagal menerjemahkan teks.";
     }
 };

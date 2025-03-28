@@ -1,21 +1,26 @@
 {
-  "name": "selfbotwa",
-  "version": "1.0.0",
-  "description": "Self Bot Whatsapp",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "dependencies": {
+    "name": "multi-bot",
+    "version": "1.0.0",
+    "description": "Discord & WhatsApp Bot",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "start:discord": "node discordBot.js",
+        "start:whatsapp": "node waBot.js"
+    },
+    "dependencies": {
+        "@bochilteam/scraper": "^1.0.0",
         "@whiskeysockets/baileys": "^6.7.16",
-        "pino": "^6.11.3",
+        "discord.js-selfbot-v13": "^2.10.1",
+        "moment": "^2.29.4",
+        "pino": "^9.6.0",
         "sharp": "^0.32.6",
         "qrcode-terminal": "^0.12.0"
-  },
-  "keywords": [
-    "botwhatsapp",
-    "selfbot"
-  ],
-  "author": "Panggigo2712",
-  "license": "ISC"
+    },
+    "keywords": [
+    "statusdiscord",
+    "discordstatus"
+    ],
+    "author": "Panggigo2712",
+    "license": "ISC"
 }
