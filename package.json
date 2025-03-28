@@ -1,17 +1,13 @@
 {
-    "name": "multi-bot",
+    "name": "selfbot wa",
     "version": "1.0.0",
-    "description": "Discord & WhatsApp Bot",
+    "description": "Self Bot WhatsApp",
     "main": "index.js",
     "scripts": {
         "start": "node index.js",
-        "start:discord": "node discordBot.js",
-        "start:whatsapp": "node waBot.js"
     },
     "dependencies": {
-        "@bochilteam/scraper": "^1.0.0",
         "@whiskeysockets/baileys": "^6.7.16",
-        "discord.js-selfbot-v13": "^2.10.1",
         "moment": "^2.29.4",
         "pino": "^9.6.0",
         "sharp": "^0.32.6",
